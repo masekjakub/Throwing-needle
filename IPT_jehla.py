@@ -1,5 +1,7 @@
 import random
 import math
+import time
+start_time = time.time()
 
 def isHit():
     for index in range(0,numberOfRows):
@@ -12,7 +14,7 @@ def isHit():
 
 spaceBetweenRows=6000
 needleSize = 1000
-numberOfRows = 666
+numberOfRows = 30
 numberOfThrows = 2000000
 
 hits=0
@@ -30,5 +32,6 @@ for throw in range(0,numberOfThrows):
         hits=hits+1
 
 res = (2*needleSize*numberOfThrows)/(hits*spaceBetweenRows)
-print(f"Calculated pi:{res}")
+print(f"Calculated pi: {res}")
 print()
+print("--- %s seconds ---" % (time.time() - start_time))
