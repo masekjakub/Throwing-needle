@@ -25,10 +25,9 @@ for row in range(0,numberOfRows):
 for throw in range(0,numberOfThrows):
     needleStartPoint = random.randrange(0,paperSize)
     angle = random.randrange(1,360)
-    height = needleSize*math.sin(angle) #difference between starting point and end of needle
+    height = needleSize*math.sin(angle) #height difference between starting point and end of needle
     if isHit():
         hits=hits+1
 
 res = (2*needleSize*numberOfThrows)/(hits*spaceBetweenRows)
 print(f"Calculated pi:{res}")
-print()
