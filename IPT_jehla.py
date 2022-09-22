@@ -2,14 +2,6 @@ import random
 import math
 import time
 start_time = time.time()
-#def isHit():
-#    for index in range(0,numberOfRows):
-#        #check if starting point of needle is between rows
-#        if needleStartPoint > listOfRowsX[index] and needleStartPoint < listOfRowsX[index]+spaceBetweenRows:
-#            #check if end of needle is in space between different rows
-#            if needleStartPoint+height < listOfRowsX[index] or needleStartPoint+height > listOfRowsX[index]+spaceBetweenRows:
-#                return 1
-#    return 0
 
 def isHit(array, x, startIndex, endIndex):
     if startIndex > endIndex:
@@ -27,10 +19,11 @@ def isHit(array, x, startIndex, endIndex):
         return isHit(array, x, mid+1, endIndex) 
     return 0
 
-spaceBetweenRows=200
-needleSize = 100
-numberOfRows = 1000
-numberOfThrows = 500000
+#settings
+spaceBetweenRows=2000
+needleSize = 1999
+numberOfRows = 100
+numberOfThrows = 5000000
 
 hits=0
 listOfRowsX=[]
