@@ -12,7 +12,7 @@ def throwNeedles():
     hits=0
     paperSize = spaceBetweenRows*numberOfRows
     random.seed(time.time()+paperSize)
-    for throw in range(0,numberOfThrows):
+    for throw in range(1,numberOfThrows):
         needleStartPoint = random.randrange(0,paperSize)
         angle = random.randrange(1,360)
         heightDiff = needleSize*math.sin(angle) #height difference between starting point and end of needle
@@ -39,8 +39,8 @@ def isHit(array, x, startIndex, endIndex, heightDiff):
 #settings
 spaceBetweenRows=20
 needleSize = 16
-numberOfRows = 1
-numberOfThrows = 50000000
+numberOfRows = 9
+numberOfThrows = 300000
 
 listOfRows=[]
 calculateRows()
