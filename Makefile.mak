@@ -1,5 +1,0 @@
-all: 
-	gcc -std=c99 -g IPT_jehla.c -o IPT_jehla.exe
-
-clean:
-	rm -rf *.o

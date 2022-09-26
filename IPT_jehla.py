@@ -44,8 +44,6 @@ def isHit(array, x, startIndex, endIndex, heightDiff, paperSize):
 
     if x >= array[mid] and x < array[mid]+spaceBetweenRows:
         if x + heightDiff < listOfRows[mid] or x + heightDiff >= listOfRows[mid]+spaceBetweenRows:   #end of needle is not between these rows
-            if x + heightDiff >= paperSize:
-                print("bum")
             return 1
         return 0
 
@@ -59,9 +57,9 @@ def isHit(array, x, startIndex, endIndex, heightDiff, paperSize):
 
 #settings
 spaceBetweenRows=30000
-needleSize = 20000
-numberOfRows = 1000
-numberOfThrows = 1500000
+needleSize = 25000
+numberOfRows = 10000
+numberOfThrows = 1000000
 
 listOfRows=[]
 calculateRows()
