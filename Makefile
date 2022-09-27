@@ -1,5 +1,5 @@
 all: 
-	gcc -std=c99 -g IPT_jehla.c -o IPT_jehla -lm
+	gcc -std=c99 -O2 IPT_jehla.c -o IPT_jehla -lm
 
 clean:
 	rm -rf *.o

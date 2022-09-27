@@ -4,14 +4,14 @@
 #include <time.h>
 #define pi 3.141592653589
 
-double spaceBetweenRows = 500;
-long needleSize = 410;
-long numberOfRows = 104;
-long numberOfThrows = 2000000;
+double spaceBetweenRows = 50;
+long needleSize = 4;
+long numberOfRows = 5000;
+long numberOfThrows = 1000000;
 
 double* calculateRows(double array[]){
     for (int i=0;i<numberOfRows;i++){
-        array[i]=spaceBetweenRows*i+spaceBetweenRows/2;
+        array[i]=spaceBetweenRows*i+spaceBetweenRows;
     }
     return array;
 }
@@ -29,18 +29,19 @@ int isHit(double rows[], double startPoint, long startIndex, long endIndex, doub
     double endPoint = startPoint + heightDiff;
 
     if (endIndex == -1){
-        if (startPoint < rows[mid] && endPoint > rows[mid]){
+        if (startPoint < rows[mid] && endPoint >= rows[mid]){
             return 1;
         }
         return 0;
     }
 
     if (startIndex > endIndex){
+        printf("%ld %ld\n", startIndex, endIndex);
         printf("Error: Binary search failed");
         return 0;
     }
 
-    if (startPoint >= rows[mid] && startPoint < rows[mid]+spaceBetweenRows){
+    if (startPoint >= rows[mid] && startPoint < rows[mid]+spaceBetweenRows+1){
         if (endPoint < rows[mid] || endPoint >= rows[mid]+spaceBetweenRows){
             return 1;
         }
@@ -54,7 +55,6 @@ int isHit(double rows[], double startPoint, long startIndex, long endIndex, doub
     {
         return isHit(rows, startPoint, mid+1, endIndex, heightDiff, paperSize);
     }
-
     printf("ERROR: StartPoint not found between rows");
     return 0;
 }
@@ -85,9 +85,8 @@ double throwNeedles(double rows[], unsigned int paperSize)
 int main(int argc, char *argv[]){
     clock_t startTime = clock();
 
-    double paperSize = spaceBetweenRows * numberOfRows;
-    double *listOfRows;
-    listOfRows = (double *)malloc(numberOfRows*sizeof(double));
+    double paperSize = spaceBetweenRows * (numberOfRows+1);
+    double *listOfRows = (double *)malloc(numberOfRows*sizeof(double));
     listOfRows = calculateRows(listOfRows);
     double hits = throwNeedles(listOfRows, paperSize);
     double calculatedPi = (2 * needleSize * numberOfThrows) / (hits * spaceBetweenRows);
