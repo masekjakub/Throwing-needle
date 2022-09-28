@@ -4,77 +4,66 @@
 #include <time.h>
 #define pi 3.141592653589
 
-double spaceBetweenRows = 50;
-long needleSize = 4;
-long numberOfRows = 5000;
-long numberOfThrows = 1000000;
+//settings
+double spaceBetweenRows = 5000000;
+long needleSize = 4999000;
+long numberOfRows = 100;
+long numberOfThrows = 80000000;
 
 double* calculateRows(double array[]){
     for (int i=0;i<numberOfRows;i++){
-        array[i]=spaceBetweenRows*i+spaceBetweenRows;
+        array[i]=spaceBetweenRows*i+spaceBetweenRows/2;
     }
     return array;
 }
 
-int isOnPaper(double point, double paperSize){
-    if(point >= 0 && point <= paperSize){
-        return 1;
+double fabs(double x){
+    if (x < 0){
+        return -x;
     }
-    return 0;
+    return x;
 }
 
-int isHit(double rows[], double startPoint, long startIndex, long endIndex, double heightDiff, double paperSize)
+int isHit(double rows[], double midPoint, long startIndex, long endIndex, double heightDiff, double paperSize)
 {
-    long mid = (startIndex + endIndex) / 2;
-    double endPoint = startPoint + heightDiff;
-
-    if (endIndex == -1){
-        if (startPoint < rows[mid] && endPoint >= rows[mid]){
-            return 1;
-        }
-        return 0;
-    }
-
+    long index = (startIndex + endIndex) / 2;
     if (startIndex > endIndex){
-        printf("%ld %ld\n", startIndex, endIndex);
-        printf("Error: Binary search failed");
+        printf("Error: Binary search failed\n");
         return 0;
     }
 
-    if (startPoint >= rows[mid] && startPoint < rows[mid]+spaceBetweenRows+1){
-        if (endPoint < rows[mid] || endPoint >= rows[mid]+spaceBetweenRows){
+    if (midPoint >= rows[index] - spaceBetweenRows / 2 && midPoint <= rows[index] + spaceBetweenRows / 2){
+        double height = fabs(rows[index] - midPoint);
+        if (heightDiff >= height){
             return 1;
         }
         return 0;
     }
 
-    if (startPoint < rows[mid]){
-        return isHit(rows, startPoint, 0, mid-1, heightDiff, paperSize);
-    }
-    if (startPoint > rows[mid])
+    if (midPoint < rows[index])
     {
-        return isHit(rows, startPoint, mid+1, endIndex, heightDiff, paperSize);
+        return isHit(rows, midPoint, 0, index - 1, heightDiff, paperSize);
     }
-    printf("ERROR: StartPoint not found between rows");
+    if (midPoint > rows[index])
+    {
+        return isHit(rows, midPoint, index + 1, endIndex, heightDiff, paperSize);
+    }
+    printf("ERROR: StartPoint not found between rows\n");
     return 0;
 }
 
-double throwNeedles(double rows[], unsigned int paperSize)
+double throwNeedles(double rows[], unsigned long paperSize)
 {
-    double needleStartPoint, heightDiff, angle, hits = 0;
+    double midPoint, heightDiff, angle, hits = 0;
 
+    srand(clock());
     for (int i=0;i<numberOfThrows;i++){
-        int OnPaper = 0;
-        while (!OnPaper){
-            srand(clock()+i*angle);
-            needleStartPoint = (rand() % ((paperSize)*10+1))/10;
-            srand(clock() - i - angle);
-            angle = (rand() % 3600)/10;
-            heightDiff = needleSize * sin(angle);
-            OnPaper = isOnPaper(needleStartPoint+heightDiff,paperSize);
-        }
+        midPoint = ((double)(rand() % (paperSize*10))/10);
+        angle = rand() % 720;
+        heightDiff = (double)needleSize/2 * sin(angle);
+        heightDiff = fabs(heightDiff);
 
-        if (isHit(rows, needleStartPoint, 0, numberOfRows - 1, heightDiff, paperSize))
+        if (isHit(rows, midPoint, 0, numberOfRows, heightDiff, paperSize))
         {
             hits++;
         }
@@ -85,7 +74,11 @@ double throwNeedles(double rows[], unsigned int paperSize)
 int main(int argc, char *argv[]){
     clock_t startTime = clock();
 
-    double paperSize = spaceBetweenRows * (numberOfRows+1);
+    unsigned long paperSize = spaceBetweenRows * numberOfRows;
+    if (paperSize > RAND_MAX)
+    {
+        printf("ERROR: Paper is too big\n");
+    }
     double *listOfRows = (double *)malloc(numberOfRows*sizeof(double));
     listOfRows = calculateRows(listOfRows);
     double hits = throwNeedles(listOfRows, paperSize);
