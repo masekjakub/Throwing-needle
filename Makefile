@@ -1,5 +1,6 @@
 all: 
-	gcc -std=c99 -Wall -pedantic -O2 IPT_jehla.c -o IPT_jehla -lm
-
+	gcc -std=gnu11 -Wall -pedantic -O2 buffons_needle.c -o buffons_needle -lm
+cuda:
+	nvcc -arch=sm_70 -lcurand -o buffons_needleCUDA buffons_needle.cu
 rm:
-	rm -rf IPT_jehla
+	rm -rf buffons_needle
